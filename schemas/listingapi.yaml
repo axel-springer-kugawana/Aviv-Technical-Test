@@ -1,10 +1,10 @@
-openapi: 3.1.0
+openapi: 3.0.0
 info:
   title: ListingAPI
   description: The Listing API
   contact:
     name: AVIV
-  version: '1.0'
+  version: "1.0"
 servers:
   - url: /
     description: The Listing API
@@ -20,14 +20,14 @@ paths:
         - listings
       operationId: get-listings
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Listing'
+                  $ref: "#/components/schemas/Listing"
     post:
       summary: Create a listing
       description: Create a listing.
@@ -35,22 +35,22 @@ paths:
         - listings
       operationId: post-listings
       responses:
-        '201':
+        "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Listing'
-        '400':
+                $ref: "#/components/schemas/Listing"
+        "400":
           description: Bad Request
-        '422':
+        "422":
           description: Unprocessable Entity (WebDAV)
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ListingWrite'
-  '/listings/{id}':
+              $ref: "#/components/schemas/ListingWrite"
+  "/listings/{id}":
     parameters:
       - schema:
           type: string
@@ -65,24 +65,24 @@ paths:
         - listings
       operationId: upsert-listing
       responses:
-        '200':
+        "200":
           description: Ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Listing'
-        '404':
+                $ref: "#/components/schemas/Listing"
+        "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APIError'
+                $ref: "#/components/schemas/APIError"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ListingWrite'
-  '/listings/{id}/prices':
+              $ref: "#/components/schemas/ListingWrite"
+  "/listings/{id}/prices":
     parameters:
       - schema:
           type: string
@@ -96,21 +96,21 @@ paths:
       tags:
         - listings
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Price'
+                  $ref: "#/components/schemas/Price"
       operationId: get-listing-prices
 components:
   schemas:
     Listing:
       allOf:
-        - $ref: '#/components/schemas/ListingRead'
-        - $ref: '#/components/schemas/ListingWrite'
+        - $ref: "#/components/schemas/ListingRead"
+        - $ref: "#/components/schemas/ListingWrite"
     ListingRead:
       type: object
       name: Listing (read only)
@@ -129,14 +129,14 @@ components:
           minimum: 0
         created_date:
           name: Creation date
-          description: 'The date at which the listing was produced, following RFC 3339.'
+          description: "The date at which the listing was produced, following RFC 3339."
           type: string
-          example: '1970-01-01T00:00:00.000Z'
+          example: "1970-01-01T00:00:00.000Z"
         updated_date:
           name: Last update date
-          description: 'The date at which the listing was last updated, following RFC 3339.'
+          description: "The date at which the listing was last updated, following RFC 3339."
           type: string
-          example: '1970-01-01T00:00:00.000Z'
+          example: "1970-01-01T00:00:00.000Z"
     ListingWrite:
       type: object
       required:
@@ -156,7 +156,7 @@ components:
           type: string
           minLength: 1
         postal_address:
-          $ref: '#/components/schemas/PostalAddress'
+          $ref: "#/components/schemas/PostalAddress"
         description:
           name: Description
           description: A user friendly description for the listing.
@@ -172,13 +172,13 @@ components:
             - HOUSE
         latest_price_eur:
           name: Price
-          description: 'The price of the listing, in euros.'
+          description: "The price of the listing, in euros."
           type: number
           minimum: 0
           example: 380000
         surface_area_m2:
           name: Surface area
-          description: 'The surface of the listing, in square meters.'
+          description: "The surface of the listing, in square meters."
           type: number
           minimum: 0
           example: 43
@@ -196,13 +196,13 @@ components:
           example: 1
         contact_phone_number:
           name: Contact phone number
-          description: 'Listing main contact phone number, following the E.164 standard.'
+          description: "Listing main contact phone number, following the E.164 standard."
           type: string
           pattern: '^\+[1-9]\d{1,14}$'
     Price:
       allOf:
-        - $ref: '#/components/schemas/PriceRead'
-        - $ref: '#/components/schemas/PriceWrite'
+        - $ref: "#/components/schemas/PriceRead"
+        - $ref: "#/components/schemas/PriceWrite"
     PriceRead:
       name: Price (read-only)
       description: Read-only fields for a price.
@@ -213,9 +213,9 @@ components:
       properties:
         created_date:
           name: Creation date
-          description: 'The date at which the listing was produced, following RFC 3339.'
+          description: "The date at which the listing was produced, following RFC 3339."
           type: string
-          example: '1970-01-01T00:00:00.000Z'
+          example: "1970-01-01T00:00:00.000Z"
     PriceWrite:
       type: object
       required:
@@ -224,7 +224,7 @@ components:
       properties:
         price_eur:
           name: Price
-          description: 'A price, expressed in euros.'
+          description: "A price, expressed in euros."
           type: integer
           example: 340000
     PostalAddress:
@@ -240,13 +240,13 @@ components:
           name: Street address
           type: string
           description: The street address of the postal address.
-          example: '48, boulevard des capucins'
+          example: "48, boulevard des capucins"
           minLength: 1
         postal_code:
           name: Postal code
           type: string
           description: The postal code of the postal address.
-          example: '10294'
+          example: "10294"
           minLength: 1
         city:
           name: City
@@ -257,7 +257,7 @@ components:
         country:
           name: Country
           type: string
-          description: 'The country of the Postal Address, as a ISO 3166-1 alpha-2 country code.'
+          description: "The country of the Postal Address, as a ISO 3166-1 alpha-2 country code."
           example: FR
           minLength: 2
           maxLength: 2
@@ -269,4 +269,3 @@ components:
       properties:
         message:
           type: string
-

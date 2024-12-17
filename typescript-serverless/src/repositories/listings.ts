@@ -126,5 +126,33 @@ export function getRepository(postgres: PostgresClient) {
 
       return tableRowToListing(result.rows[0]);
     },
+
+    async addPriceHistory(listingId: number, price: number) {
+      const existingEntry = await postgres.query(
+        `SELECT 1 FROM price_history 
+         WHERE listing_id = $1 AND price_eur = $2`,
+        [listingId, price]
+      );
+
+      if (existingEntry.rows.length === 0) {
+        await postgres.query(
+          `INSERT INTO price_history (listing_id, price_eur) VALUES ($1, $2)`,
+          [listingId, price]
+        );
+      }
+    },
+
+    async getListingPriceHistory(
+      listingId: number
+    ): Promise<{ price_eur: number; created_date: string }[]> {
+      const queryString = `
+        SELECT price_eur, created_date
+        FROM price_history
+        WHERE listing_id = $1
+        ORDER BY created_date ASC
+      `;
+      const result = await postgres.query(queryString, [listingId]);
+      return result.rows;
+    },
   };
 }

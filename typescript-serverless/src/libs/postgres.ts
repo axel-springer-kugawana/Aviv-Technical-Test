@@ -2,10 +2,10 @@ import PostgresClient from "serverless-postgres";
 
 export const postgres = new PostgresClient({
   application_name: "listingapi-typescript",
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
+  host: process.env.PGHOST || "localhost", // should be fine for testing purposes
+  database: process.env.PGDATABASE || "listing",
+  user: process.env.PGUSER || "listing",
+  password: process.env.PGPASSWORD || "listing",
 });
 
 /**

@@ -23,18 +23,25 @@ export const addListing = functionHandler<Listing, ListingWrite>(
 
 export const updateListing = functionHandler<Listing, ListingWrite>(
   async (event, context) => {
-    try {
-      const listing = await getRepository(context.postgres).updateListing(
-        parseInt(event.pathParameters.id),
-        event.body
-      );
+    const listingId = parseInt(event.pathParameters.id);
+    const updates = event.body;
 
-      return { statusCode: 200, response: listing };
+    const repository = getRepository(context.postgres);
+
+    try {
+      const existingListing = await repository.getListing(listingId);
+
+      if (updates.latest_price_eur !== existingListing.latest_price_eur) {
+        await repository.addPriceHistory(listingId, updates.latest_price_eur);
+      }
+
+      const updatedListing = await repository.updateListing(listingId, updates);
+
+      return { statusCode: 200, response: updatedListing };
     } catch (e) {
       if (e instanceof EntityNotFound) {
         throw new NotFound(e.message);
       }
-
       throw e;
     }
   }
